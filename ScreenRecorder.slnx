@@ -1,0 +1,9 @@
+<Solution>
+  <Configurations><Platform Name="x64" /></Configurations>
+  <Folder Name="/src/">
+    <Project Path="src/ScreenRecorder/ScreenRecorder.csproj"><Platform Project="x64" /></Project>
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/ScreenRecorder.SmokeTests/ScreenRecorder.SmokeTests.csproj"><Platform Project="x64" /></Project>
+  </Folder>
+</Solution>

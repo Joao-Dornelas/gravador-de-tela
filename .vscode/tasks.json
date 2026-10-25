@@ -1,0 +1,27 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "build",
+      "type": "process",
+      "command": "dotnet",
+      "args": ["build", "${workspaceFolder}/ScreenRecorder.slnx"],
+      "problemMatcher": "$msCompile",
+      "group": { "kind": "build", "isDefault": true }
+    },
+    {
+      "label": "run",
+      "type": "process",
+      "command": "dotnet",
+      "args": ["run", "--project", "${workspaceFolder}/src/ScreenRecorder/ScreenRecorder.csproj"],
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "publish-portable",
+      "type": "process",
+      "command": "dotnet",
+      "args": ["publish", "${workspaceFolder}/src/ScreenRecorder/ScreenRecorder.csproj", "-p:PublishProfile=Portable"],
+      "problemMatcher": "$msCompile"
+    }
+  ]
+}
