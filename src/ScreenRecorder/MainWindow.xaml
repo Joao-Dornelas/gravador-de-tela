@@ -1,0 +1,58 @@
+<Window x:Class="ScreenRecorder.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Icon="Assets/App.ico" Title="Gravador de Tela" Width="390" Height="220" ResizeMode="CanMinimize"
+        WindowStartupLocation="CenterScreen" Background="#F3F5F9" FontFamily="Segoe UI" FontSize="13">
+    <Window.Resources>
+        <Style TargetType="Button"><Setter Property="Padding" Value="10,9"/><Setter Property="Cursor" Value="Hand"/><Setter Property="Margin" Value="0,0,8,0"/></Style>
+        <Style x:Key="IconButton" TargetType="Button"><Setter Property="Width" Value="30"/><Setter Property="Height" Value="30"/><Setter Property="FontFamily" Value="Segoe MDL2 Assets"/><Setter Property="FontSize" Value="18"/><Setter Property="Background" Value="Transparent"/><Setter Property="BorderThickness" Value="0"/><Setter Property="Cursor" Value="Hand"/><Setter Property="Margin" Value="4,0,0,0"/></Style>
+        <Style x:Key="ActionIconButton" TargetType="Button">
+            <Setter Property="Height" Value="36"/><Setter Property="Width" Value="42"/><Setter Property="Margin" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/><Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="Template">
+                <Setter.Value><ControlTemplate TargetType="Button">
+                    <Border x:Name="Surface" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="8">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True"><Setter TargetName="Surface" Property="Opacity" Value="0.8"/></Trigger>
+                        <Trigger Property="IsPressed" Value="True"><Setter TargetName="Surface" Property="Opacity" Value="0.6"/></Trigger>
+                        <Trigger Property="IsKeyboardFocused" Value="True"><Setter TargetName="Surface" Property="BorderBrush" Value="#17243A"/><Setter TargetName="Surface" Property="BorderThickness" Value="2"/></Trigger>
+                        <Trigger Property="IsEnabled" Value="False"><Setter TargetName="Surface" Property="Opacity" Value="0.35"/></Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate></Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+    <StackPanel Margin="16,8,16,8">
+        <DockPanel Margin="0,0,0,8">
+            <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" VerticalAlignment="Center">
+                <Button Style="{StaticResource IconButton}" ToolTip="Abrir pasta das gravações" AutomationProperties.Name="Abrir pasta das gravações" Click="OpenFolderClick"><Path Data="M1,6 V3 H8 L11,6 H21 V18 H1 Z M1,8 H21" Width="20" Height="18" Stretch="Uniform" Stroke="#17243A" StrokeThickness="1.5" StrokeLineJoin="Round"/></Button>
+                <Button x:Name="SettingsButton" Content="&#xE713;" Style="{StaticResource IconButton}" ToolTip="Configurações" AutomationProperties.Name="Configurações" Click="SettingsClick"/>
+            </StackPanel>
+            <TextBlock x:Name="TimerText" Text="00:00:00" FontFamily="Consolas" FontSize="24" Foreground="#17243A" Margin="0,0,10,0" VerticalAlignment="Center"/>
+            <TextBlock x:Name="StatusText" Text="" Foreground="#526079" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" FontSize="11"/>
+        </DockPanel>
+        <StackPanel x:Name="OptionsPanel">
+            <ComboBox x:Name="MonitorBox" SelectionChanged="MonitorChanged" Padding="6,3" MinHeight="27" ToolTip="Selecionar monitor" AutomationProperties.Name="Selecionar monitor"/>
+        </StackPanel>
+        <Grid Margin="0,8,0,0">
+            <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="Auto"/><ColumnDefinition/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+            <Button x:Name="FullScreenButton" Style="{StaticResource ActionIconButton}" Click="FullScreenClick" ToolTip="Gravar tela inteira" AutomationProperties.Name="Gravar tela inteira" Foreground="#2162D5" Margin="0,0,6,0">
+                <Path Data="M2,2 H22 V16 H2 Z M12,16 V21 M7,21 H17" Width="20" Height="19" Stretch="Uniform" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" StrokeThickness="1.8" StrokeLineJoin="Round"/>
+            </Button>
+            <Button x:Name="SelectAreaButton" Grid.Column="1" Style="{StaticResource ActionIconButton}" Click="SelectAreaClick" ToolTip="Selecionar área da tela" AutomationProperties.Name="Selecionar área da tela" Foreground="#7C3AED">
+                <Grid Width="21" Height="20"><Rectangle Margin="4" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" StrokeThickness="1.4" StrokeDashArray="2,2"/><Path Data="M1,6 V1 H6 M15,1 H20 V6 M20,14 V19 H15 M6,19 H1 V14" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" StrokeThickness="1.8" StrokeLineJoin="Round"/></Grid>
+            </Button>
+            <Button x:Name="StartButton" Grid.Column="3" Style="{StaticResource ActionIconButton}" Click="PrimaryRecordingClick" Background="#FEE2E2" ToolTip="Iniciar gravação" AutomationProperties.Name="Iniciar gravação" Margin="0,0,6,0">
+                <Path x:Name="RecordingGlyph" Width="18" Height="18" Stretch="Uniform" Fill="#DC2626"><Path.Data><EllipseGeometry Center="9,9" RadiusX="9" RadiusY="9"/></Path.Data></Path>
+            </Button>
+            <Button x:Name="StopButton" Grid.Column="4" Style="{StaticResource ActionIconButton}" Click="StopClick" Background="#DBEAFE" IsEnabled="False" ToolTip="Finalizar e salvar gravação" AutomationProperties.Name="Finalizar e salvar gravação">
+                <Rectangle Width="16" Height="16" RadiusX="2" RadiusY="2" Fill="#2563EB"/>
+            </Button>
+        </Grid>
+        <TextBlock x:Name="AreaText" Text="Todo o monitor selecionado" Foreground="#526079" FontSize="11" Margin="0,5,0,0"/>
+        <TextBlock x:Name="ShortcutText" Text="Ctrl+Shift+F9: pausar/retomar · Ctrl+Shift+F10: finalizar" TextTrimming="CharacterEllipsis" FontSize="10" Foreground="#526079" Margin="0,5,0,0" ToolTip="Ctrl+Shift+F9: pausar ou retomar. Ctrl+Shift+F10: finalizar."/>
+    </StackPanel>
+</Window>
